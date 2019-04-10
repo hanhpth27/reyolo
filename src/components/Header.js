@@ -24,7 +24,21 @@ export default class Header extends Component {
     
       handlePlaceChanged() {
         const place = this.autocomplete.getPlace();
-        this.props.onPlaceChanged(place.geometry.location);
+        
+          if (!place.geometry) {
+            // User entered the name of a Place that was not suggested and
+            // pressed the Enter key, or the Place Details request failed.
+            window.alert("No details available for input: '" + place.name + "'");
+            return;
+          }
+
+          // If the place has a geometry, then present it on a map.
+          // if (place.geometry.viewport) {
+          //   return;
+          // } else {
+          //   
+          // }
+          this.props.onPlaceChanged(place.geometry.location);
       }
     render(){
         const {placeholder} = this.props

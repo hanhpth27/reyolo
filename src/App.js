@@ -15,7 +15,7 @@ class App extends Component {
   }
   showStartPlace(place) {
     const startPlace = JSON.stringify(place, null, 2)
-    this.setState({ startPlace : startPlace });
+    this.setState({ startPlace : place });
     //console.log(this.state.startPlace);
   }
 
