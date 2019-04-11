@@ -8,21 +8,24 @@ class Map extends Component {
     constructor (props) {
         super(props)
         //this.searchbar = React.createRef();
-        this.state = {
-          mapsLoaded: false,
-          map: null,
-          maps: null,
-        }
+        // this.state = {
+        //   mapsLoaded: false,
+        //   map: null,
+        //   maps: null,
+        // }
     }
     onMapLoaded (map, maps) {
         this.fitBounds(map, maps)
         //map.controls[maps.ControlPosition.TOP_LEFT].push(this.searchbox.current);
-        this.setState({
-          //...this.state,
-          mapsLoaded: true,
-          map: map,
-          maps: maps
-        })
+        // this.setState({
+        //   //...this.state,
+        //   mapsLoaded: true,
+        //   map: map,
+        //   maps: maps
+        // })
+        this.mapsLoaded = true;
+        this.map = map;
+        this.maps = maps;
     }
 
     fitBounds (map, maps) {
@@ -35,20 +38,29 @@ class Map extends Component {
         map.fitBounds(bounds)
     }
 
+    showMarker(){
+      const {startPlace, endPlace} = this.props;
+      if(endPlace || startPlace){
+        return  <MarkerPlace startPlace={startPlace}
+        endPlace={endPlace}
+        map= {this.state.map}
+        maps= {this.state.maps}/>
+      }
+    }
     afterMapLoadChanges () {
-        const {startPlace, endPlace} = this.props;
+        
         return (
           <div style={{display: 'none'}}>
-            <MarkerPlace startPlace={startPlace}
-                  endPlace={endPlace}
-                  map= {this.state.map}
-                  maps= {this.state.maps}/>
+            {/* {this.showMarker()} */}
           </div>
         )
     }
     render () {
-       
+      const {startPlace, endPlace} = this.props;
+      // const {map, maps} = this.state;
+
         return (
+          <>
           <GoogleMapReact
             className="mapp"
             bootstrapURLKeys={{key: 'AIzaSyDc2L7RMA_qzBVxIMKD1z6-FfMdOs32Vmc',
@@ -59,9 +71,13 @@ class Map extends Component {
             defaultZoom={this.props.zoom}
             yesIWantToUseGoogleMapApiInternals
             onGoogleApiLoaded={({map, maps}) => this.onMapLoaded(map, maps)}>
-            {this.state.mapsLoaded ? this.afterMapLoadChanges() : ''}
+            
           </GoogleMapReact>
-          
+          {this.mapsLoaded && (<MarkerPlace startPlace={startPlace}
+              endPlace={endPlace}
+              map={this.map}
+            maps={this.maps} />)}
+          </>
         )
       }
 }

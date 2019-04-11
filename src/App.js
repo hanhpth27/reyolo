@@ -9,14 +9,14 @@ class App extends Component {
   constructor(props){
     super(props)
     this.state={
-      startPlace: {},
-      endPlace: {}
+      startPlace: null,
+      endPlace: null
     }
   }
   showStartPlace(place) {
     const startPlace = JSON.stringify(place, null, 2)
     this.setState({ startPlace : place });
-    //console.log(this.state.startPlace);
+    console.log(this.state.startPlace);
   }
 
   showEndPlace(place) {

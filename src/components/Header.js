@@ -8,17 +8,20 @@ export default class Header extends Component {
         this.handlePlaceChanged = this.handlePlaceChanged.bind(this);
       }
     
-      componentDidMount() {
+    componentDidMount() {
         //const {map, maps} = this.props;
         const google = window.google;
         var options = {
-            types: ["geocode"],
+            //types: ["geocode"],
             componentRestrictions: {country: "vn"}
            };
         this.autocomplete = new google.maps.places.Autocomplete(
-          this.autocompleteInput.current,
-          options
+          this.autocompleteInput.current
+          , options
         );
+        // Set the data fields to return when the user selects a place.
+        this.autocomplete.setFields(
+            ['address_components', 'geometry', 'icon', 'name']);
         this.autocomplete.addListener("place_changed", this.handlePlaceChanged);
       }
     
@@ -31,19 +34,12 @@ export default class Header extends Component {
             window.alert("No details available for input: '" + place.name + "'");
             return;
           }
-
-          // If the place has a geometry, then present it on a map.
-          // if (place.geometry.viewport) {
-          //   return;
-          // } else {
-          //   
-          // }
           this.props.onPlaceChanged(place.geometry.location);
       }
     render(){
         const {placeholder} = this.props
         return (
-                    <input type="text" className="form-control" id="autocomplete" ref={this.autocompleteInput}
+                <input type="text" className="form-control" id="autocomplete" ref={this.autocompleteInput}
                     placeholder={placeholder}/>
           );
     }
